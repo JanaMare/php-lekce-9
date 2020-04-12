@@ -47,6 +47,30 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/edit/{id}", name="product_edit", methods="GET|POST")
+     */
+    public function edit(Request $request, $id): Response
+    {
+        $product = new Product();
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('product_index');
+        }
+
+        return $this->render('product/edit.html.twig', [
+            'product' => $product,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/{id}", name="product_show", methods="GET")
      */
     public function show(Product $product): Response
