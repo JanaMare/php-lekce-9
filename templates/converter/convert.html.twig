@@ -5,10 +5,12 @@
 {% block body %}
     <h2>Source:</h2>
 
-    [form]
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
 
     <h2>Result:</h2>
 
-    [result]
+    {{result}}
 
 {% endblock %}
